@@ -1,20 +1,20 @@
 'use strict'
 
-var Cliente = require('../models/cliente');
+var admin = require('../models/admin');
 var bcrypt = require('bcrypt-nodejs');
 
-const registro_cliente = async function(req, res){
+const registro_admin = async function(req, res){
     var data =  req.body;
 
-    var clientes_arr = [];
-    clientes_arr = await Cliente.find({email: data.email});
+    var admins_arr = [];
+    admins_arr = await admin.find({email: data.email});
 
-    if(clientes_arr.length == 0){
+    if(admins_arr.length == 0){
         if(data.password){
             bcrypt.hash(data.password, null, null, async function(err, hash){
                 if(hash){
                     data.password = hash
-                    var reg = await Cliente.create(data);
+                    var reg = await admin.create(data);
                     res.status(200).send({message:reg});
                 }else{
                     res.status(200).send({message:'ErrorServer', data: undefined});
@@ -26,9 +26,8 @@ const registro_cliente = async function(req, res){
     }else{
         res.status(200).send({message:'El correo ya se encuentra registrado', data: undefined});
     }
-   
 }
 
 module.exports = {
-    registro_cliente
+    registro_admin
 }
