@@ -12,19 +12,26 @@ var port = process.env.PORT || 4201;
 
 var app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/proyecto',{useUnifiedTopology: true, useNewUrlParser: true},(err, res) => {
-    if(err){
-        console.log(err)
-    }else{
-        app.listen(port, function(){
-            console.log('servidor corriendo en el puerto ' + port);
-        });
-    }
+mongoose.connect('mongodb://127.0.0.1:27017/proyecto',
+    {
+        useUnifiedTopology: true,
+        useNewUrlParser: true
+    },
+    (err, res) => {
+        if(err){
+            console.log(err)
+        }else{
+            app.listen(port, function(){
+                console.log('servidor corriendo en el puerto ' + port);
+            });
+        }
 });
+
 
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(bodyparser.json({limit: '50mb' ,extended: true}));
 
+//Permisos para evitar inconvenientes con el frontend
 app.use((req,res,next)=>{
     res.header('Access-Control-Allow-Origin','*'); 
     res.header('Access-Control-Allow-Headers','Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Access-Control-Allow-Request-Method');
